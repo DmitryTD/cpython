@@ -74,6 +74,14 @@ class NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         ctypes.resize(value, 65536)
         self.assertEqual(value.value, 17)
 
+    def test_resized_scalar_truth(self):
+        for t in signed_types + unsigned_types + float_types + bool_types:
+            with self.subTest(t=t):
+                value = t()
+                ctypes.resize(value, 16)
+                ctypes.memset(ctypes.addressof(value) + sizeof(t), 1, 1)
+                self.assertFalse(value)
+
     def test_unsigned_values(self):
         # the value given to the constructor is available
         # as the 'value' attribute
