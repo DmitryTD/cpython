@@ -73,6 +73,14 @@ class CFunctions(unittest.TestCase):
         self.assertEqual(self._dll.tf_i(-2147483646), -715827882)
         self.assertEqual(self.S(), -2147483646)
 
+    def test_int_resized(self):
+        self._dll.tf_i.restype = c_int
+        self._dll.tf_i.argtypes = (c_int,)
+        value = c_int(-2147483646)
+        ctypes.resize(value, 128)
+        self.assertEqual(self._dll.tf_i(value), -715827882)
+        self.assertEqual(self.S(), -2147483646)
+
     def test_int_plus(self):
         self._dll.tf_bi.restype = c_int
         self._dll.tf_bi.argtypes = (c_byte, c_int)
